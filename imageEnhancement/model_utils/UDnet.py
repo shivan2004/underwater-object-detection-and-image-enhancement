@@ -74,7 +74,7 @@ class Decoder(nn.Module):
         pr_x1, pr_x2, pr_x3, pr_x4 = self.pr_encoder.forward(Input)
 
         if training:
-            Target = self.colornet(Target)  # todo ALz
+            Target = self.colornet(Target)
             po_x1, po_x2, po_x3, po_x4 = self.po_encoder.forward(torch.cat((Input, Target), dim=1))
             # x4->x3
             pr_x4 = self.pr_conv(pr_x4)
