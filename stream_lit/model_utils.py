@@ -6,8 +6,8 @@ from ultralytics import YOLO
 
 # ---------- Paths ----------
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-UD_MODEL_PATH = os.path.join(PROJECT_ROOT, "streamlit", "weights", "UDnet.pth")
-YOLO_MODEL_PATH = os.path.join(PROJECT_ROOT, "streamlit", "weights", "best.pt")
+UD_MODEL_PATH = os.path.join(PROJECT_ROOT, "stream_lit", "weights", "UDnet.pth")
+YOLO_MODEL_PATH = os.path.join(PROJECT_ROOT, "stream_lit", "weights", "best.pt")
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 PAD_MULTIPLE = 32

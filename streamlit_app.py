@@ -2,8 +2,14 @@ import streamlit as st
 import cv2
 import numpy as np
 import io
+import os
 
-from streamlit.model_utils import (
+# ---------- Paths ----------
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+MODEL_UTILS_PATH = os.path.join(PROJECT_ROOT, "streamlit")
+
+# Correct import
+from stream_lit.model_utils import (
     load_ud_model, load_yolo_model,
     enhance_image, run_detection
 )

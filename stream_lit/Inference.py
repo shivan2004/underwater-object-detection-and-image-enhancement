@@ -18,8 +18,8 @@ os.chdir(PROJECT_ROOT)
 
 PAD_MULTIPLE = 32
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
-UD_MODEL_PATH = "streamlit/weights/UDnet.pth"
-YOLO_MODEL_PATH = "streamlit/weights/best.pt"
+UD_MODEL_PATH = "stream_lit/weights/UDnet.pth"
+YOLO_MODEL_PATH = "stream_lit/weights/best.pt"
 
 # ---------- Load models ----------
 @st.cache_resource(show_spinner=False)
