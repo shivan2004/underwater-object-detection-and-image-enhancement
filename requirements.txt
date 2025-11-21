@@ -1,3 +1,14 @@
 ultralytics
 opencv-python
 torch
+torchvision
+numpy
+Pillow
+scikit-image
+scipy
+matplotlib
+tqdm
+PyYAML
+tensorboard
+streamlit
+opencv-python-headless
