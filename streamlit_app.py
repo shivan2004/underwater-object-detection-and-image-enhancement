@@ -1,39 +1,48 @@
+# streamlit_app.py
+
 import streamlit as st
-# import cv2
+import cv2
 import numpy as np
 import io
 import os
 
-# ---------- Paths (optional, if you need project root) ----------
-PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+# (Optional) project root, if you ever need it
+PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
-# Correct import from your utilities
+# Import from your helper module
 from stream_lit.model_utils import (
-    load_ud_model, load_yolo_model,
-    enhance_image, run_detection
+    load_ud_model,
+    load_yolo_model,
+    enhance_image,
+    run_detection,
 )
 
-# ---------- App Title ----------
+# ---------- Page config ----------
 st.set_page_config(page_title="Underwater Enhancement + Detection", layout="wide")
 
 st.title("🌊 Underwater Image Enhancement & Object Detection")
 
-st.write("""
+st.write(
+    """
 This application enhances underwater images using **UDNet** and detects objects using **YOLO**.
+
 Use the buttons below to:
 - Run object detection on the original image
 - Enhance the image
 - Compare detection before and after enhancement
-""")
+"""
+)
 
 # ---------- Load Models (cached) ----------
 @st.cache_resource(show_spinner=True)
 def get_ud_model():
     return load_ud_model()
 
+
 @st.cache_resource(show_spinner=True)
 def get_yolo_model():
     return load_yolo_model()
+
 
 ud_model = get_ud_model()
 yolo_model = get_yolo_model()
@@ -50,7 +59,7 @@ with left_col:
     uploaded = st.file_uploader(
         "Upload an underwater image",
         type=["png", "jpg", "jpeg"],
-        label_visibility="collapsed"
+        label_visibility="collapsed",
     )
 
     # Initialize session_state keys if needed
@@ -92,7 +101,9 @@ with left_col:
         with btn_col1:
             enhance_clicked = st.button("✨ Enhance", use_container_width=True)
         with btn_col2:
-            detect_orig_clicked = st.button("🎯 Run Object Detection", use_container_width=True)
+            detect_orig_clicked = st.button(
+                "🎯 Run Object Detection", use_container_width=True
+            )
         with btn_col3:
             compare_clicked = st.button("🧪 Compare", use_container_width=True)
 
@@ -146,11 +157,15 @@ with left_col:
                 data=io.BytesIO(buf_enh.tobytes()),
                 file_name="enhanced.png",
                 mime="image/png",
-                use_container_width=True
+                use_container_width=True,
             )
 
             # Button for detection ON ENHANCED image
-            if st.button("🎯 Run Object Detection on Enhanced", use_container_width=True, key="detect_on_enh"):
+            if st.button(
+                    "🎯 Run Object Detection on Enhanced",
+                    use_container_width=True,
+                    key="detect_on_enh",
+            ):
                 st.session_state.detected_enhanced = run_detection(yolo_model, enhanced)
                 st.session_state.last_action = "detect_enhanced"
 
@@ -161,7 +176,7 @@ with left_col:
             det_orig = st.session_state.detected_original
 
             st.subheader("🟦 Detection on Original Image")
-            # Assuming run_detection returns BGR image; convert to RGB for display
+            # run_detection returns BGR; convert to RGB for display
             st.image(cv2.cvtColor(det_orig, cv2.COLOR_BGR2RGB), use_column_width=True)
 
             _, buf_det_o = cv2.imencode(".png", det_orig)
@@ -170,7 +185,7 @@ with left_col:
                 data=io.BytesIO(buf_det_o.tobytes()),
                 file_name="detected_original.png",
                 mime="image/png",
-                use_container_width=True
+                use_container_width=True,
             )
 
         # --------------------------------------------------
@@ -188,7 +203,7 @@ with left_col:
                 data=io.BytesIO(buf_det_e.tobytes()),
                 file_name="detected_enhanced.png",
                 mime="image/png",
-                use_container_width=True
+                use_container_width=True,
             )
 
         # --------------------------------------------------
@@ -205,14 +220,18 @@ with left_col:
             with col_a:
                 st.markdown("**Original + Detection**")
                 st.image(
-                    cv2.cvtColor(st.session_state.detected_original, cv2.COLOR_BGR2RGB),
-                    use_column_width=True
+                    cv2.cvtColor(
+                        st.session_state.detected_original, cv2.COLOR_BGR2RGB
+                    ),
+                    use_column_width=True,
                 )
             with col_b:
                 st.markdown("**Enhanced + Detection**")
                 st.image(
-                    cv2.cvtColor(st.session_state.detected_enhanced, cv2.COLOR_BGR2RGB),
-                    use_column_width=True
+                    cv2.cvtColor(
+                        st.session_state.detected_enhanced, cv2.COLOR_BGR2RGB
+                    ),
+                    use_column_width=True,
                 )
 
     else:
@@ -223,7 +242,8 @@ with left_col:
 # ----------------------------------------------------------
 with right_col:
     st.markdown("### ℹ️ About This Application")
-    st.write("""
+    st.write(
+        """
 This tool performs **two major tasks** on underwater images:
 
 #### **1️⃣ Image Enhancement (UDNet)**
@@ -241,13 +261,15 @@ Once enhanced, the image is passed through a YOLO model to identify:
 - Objects of interest  
 
 The detection result is displayed with bounding boxes.
-""")
+"""
+    )
 
     st.markdown("---")
 
     st.markdown("### 🧭 How to Use")
 
-    st.write("""
+    st.write(
+        """
 #### **Step 1 — Upload**
 Upload any underwater image (JPG/PNG).
 
@@ -263,14 +285,17 @@ Upload any underwater image (JPG/PNG).
 You can also download:
 - Enhanced image  
 - Detection outputs  
-""")
+"""
+    )
 
     st.markdown("---")
 
     st.markdown("### ⚙️ Models Used")
 
-    st.write("""
+    st.write(
+        """
 - **UDNet** – Deep learning model for underwater image enhancement  
 - **YOLO** – High-performance object detection model  
 Both models are automatically loaded and cached for speed.
-""")
+"""
+    )
