@@ -1,5 +1,7 @@
 ultralytics
-opencv-python
+
+opencv-python-headless==4.12.0.88
+
 torch
 torchvision
 numpy
@@ -11,4 +13,3 @@ tqdm
 PyYAML
 tensorboard
 streamlit
-opencv-python-headless
